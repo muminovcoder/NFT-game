@@ -1,0 +1,12 @@
+{
+  "name": "nft-game",
+  "version": "1.0.0",
+  "description": "NFT Game Frontend",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'No build step'"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
