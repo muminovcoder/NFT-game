@@ -2,7 +2,8 @@ const Admin = {
     pendingWithdrawals: [],
     processedWithdrawals: [],
     isAdmin: false,
-    adminPassword: 'admin123',
+    // Parol o'zgartirildi
+    adminPassword: 'kmuminov2008',
 
     async checkAdmin() {
         const savedPassword = localStorage.getItem('adminPassword');
@@ -28,7 +29,7 @@ const Admin = {
                     Login
                 </button>
                 
-                <p class="demo-note">Demo password: admin123</p>
+                <!-- Demo parol ko'rsatadigan qator o'chirildi -->
             </div>
         `;
         App.showModal(content);
