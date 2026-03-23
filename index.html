@@ -7,9 +7,212 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>NFT Card Collection Game</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            color: #fff;
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .sidebar-menu {
+            padding: 10px 0;
+        }
+
+        .sidebar-menu .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu .menu-item:hover,
+        .sidebar-menu .menu-item.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-left-color: #3b82f6;
+        }
+
+        .sidebar-menu .menu-item .menu-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Menu Toggle Button */
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        /* Bot Connection Status */
+        .bot-status {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+        }
+
+        .bot-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .bot-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        .bot-status-dot.disconnected {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 260px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="app">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>🎮 NFT Game</h3>
+                <button class="sidebar-close" onclick="toggleSidebar()">&times;</button>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="https://nft-game-1-1ryd.onrender.com" class="menu-item active">
+                    <span class="menu-icon">🏠</span>
+                    <span>Bosh sahifa</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('dashboard'); toggleSidebar(); return false;">
+                    <span class="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('packs'); toggleSidebar(); return false;">
+                    <span class="menu-icon">📦</span>
+                    <span>Packs</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('battle'); toggleSidebar(); return false;">
+                    <span class="menu-icon">⚔️</span>
+                    <span>Battle</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('collection'); toggleSidebar(); return false;">
+                    <span class="menu-icon">🃏</span>
+                    <span>Collection</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('marketplace'); toggleSidebar(); return false;">
+                    <span class="menu-icon">🛒</span>
+                    <span>Market</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('bonus'); toggleSidebar(); return false;">
+                    <span class="menu-icon">🎁</span>
+                    <span>Daily Bonus</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('referral'); toggleSidebar(); return false;">
+                    <span class="menu-icon">👥</span>
+                    <span>Referral</span>
+                </a>
+                <a href="#" class="menu-item" onclick="App.navigateTo('withdraw'); toggleSidebar(); return false;">
+                    <span class="menu-icon">💰</span>
+                    <span>Withdraw</span>
+                </a>
+                <a href="#" class="menu-item" onclick="Admin.showAdminLogin(); toggleSidebar(); return false;">
+                    <span class="menu-icon">🔐</span>
+                    <span>Admin Panel</span>
+                </a>
+                
+                <!-- Bot Connection Status -->
+                <div class="bot-status">
+                    <div style="color: #94a3b8; font-size: 0.9rem;">Telegram Bot</div>
+                    <div class="bot-status-indicator">
+                        <div class="bot-status-dot" id="botStatusDot"></div>
+                        <span id="botStatusText" style="color: #fff; font-size: 0.85rem;">Connected</span>
+                    </div>
+                    <a href="https://t.me/your_bot_username" target="_blank" class="menu-item" style="margin-top: 10px; padding: 10px 15px; background: rgba(59, 130, 246, 0.2); border-radius: 8px;">
+                        <span class="menu-icon">🤖</span>
+                        <span>Open Bot</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
         <div class="loading-overlay" id="loadingOverlay">
             <div class="spinner"></div>
         </div>
@@ -26,6 +229,7 @@
         </div>
 
         <header class="header">
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
             <div class="user-avatar" id="userAvatar">
                 <span>U</span>
             </div>
@@ -98,6 +302,132 @@
     <script src="admin.js"></script>
 
     <script>
+        // ==================== GLOBAL CONFIG ====================
+        const SITE_URL = 'https://nft-game-1-1ryd.onrender.com';
+        const BOT_USERNAME = 'your_bot_username'; // Telegram bot username (masalan: NFTGameBot)
+        const BOT_WEBHOOK_URL = `${SITE_URL}/webhook`;
+        
+        // ==================== SIDEBAR FUNCTIONS ====================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('active')) {
+                toggleSidebar();
+            }
+        });
+
+        // ==================== BOT INTEGRATION ====================
+        class BotIntegration {
+            constructor() {
+                this.isConnected = false;
+                this.userId = null;
+                this.init();
+            }
+
+            async init() {
+                await this.checkConnection();
+                this.startHeartbeat();
+            }
+
+            async checkConnection() {
+                try {
+                    // Simulate bot connection check
+                    const savedBotId = localStorage.getItem('telegramBotId');
+                    if (savedBotId) {
+                        this.userId = savedBotId;
+                        this.isConnected = true;
+                        this.updateBotStatus(true);
+                    } else {
+                        this.isConnected = false;
+                        this.updateBotStatus(false);
+                    }
+                } catch (error) {
+                    console.error('Bot connection check failed:', error);
+                    this.isConnected = false;
+                    this.updateBotStatus(false);
+                }
+            }
+
+            updateBotStatus(connected) {
+                const dot = document.getElementById('botStatusDot');
+                const text = document.getElementById('botStatusText');
+                
+                if (connected) {
+                    dot.classList.remove('disconnected');
+                    text.textContent = 'Connected';
+                    text.style.color = '#22c55e';
+                } else {
+                    dot.classList.add('disconnected');
+                    text.textContent = 'Disconnected';
+                    text.style.color = '#ef4444';
+                }
+            }
+
+            async connectBot() {
+                // This would normally open Telegram and get user ID
+                const telegramUrl = `https://t.me/${BOT_USERNAME}?start=${MockAPI.user.id}`;
+                window.open(telegramUrl, '_blank');
+                
+                // Save connection after user opens bot
+                setTimeout(() => {
+                    localStorage.setItem('telegramBotId', MockAPI.user.id);
+                    this.isConnected = true;
+                    this.updateBotStatus(true);
+                    App.showToast('Bot connected successfully!', 'success');
+                }, 3000);
+            }
+
+            async sendToBot(message, type = 'notification') {
+                if (!this.isConnected) {
+                    console.warn('Bot not connected');
+                    return false;
+                }
+
+                try {
+                    // In real implementation, this would call your backend
+                    console.log(`[BOT] Sending to ${this.userId}: ${message}`);
+                    
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Failed to send to bot:', error);
+                    return false;
+                }
+            }
+
+            startHeartbeat() {
+                // Check connection every 30 seconds
+                setInterval(() => {
+                    this.checkConnection();
+                }, 30000);
+            }
+
+            // Send notification when withdrawal is approved/rejected
+            async sendWithdrawalNotification(status, amount, userId) {
+                const message = status === 'approved' 
+                    ? `✅ Withdrawal Approved! ${amount} so'm has been sent to your card.`
+                    : `❌ Withdrawal Rejected. ${amount} coins returned to your balance.`;
+                
+                await this.sendToBot(message, 'withdrawal');
+            }
+        }
+
+        // Initialize Bot Integration
+        const bot = new BotIntegration();
+
+        // ==================== APP EXTENSIONS ====================
         MockAPI.init();
         
         App.renderView = function(view) {
@@ -174,7 +504,7 @@
                                     </div>
                                     <span class="icon-arrow">›</span>
                                 </button>
-                                <button class="feature-card ripple" onclick="Admin.showAdminLogin()">
+                                <button class="feature-card ripple" onclick="Admin.showAdminLogin(); return false;">
                                     <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
                                         <span>🔐</span>
                                     </div>
@@ -348,11 +678,19 @@
             }
         };
 
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', () => {
             App.init();
+            
+            // Check bot connection status
+            setTimeout(() => {
+                bot.checkConnection();
+            }, 1000);
         });
 
         window.telegramReady = true;
+        window.SITE_URL = SITE_URL;
+        window.bot = bot;
     </script>
 </body>
 </html>
