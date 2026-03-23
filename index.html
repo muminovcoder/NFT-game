@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>NFT Card Collection Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="toast hidden" id="toast">
+            <span id="toastMessage"></span>
+        </div>
+
+        <div class="modal hidden" id="modal">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+
+        <header class="header">
+            <div class="user-avatar" id="userAvatar">
+                <span>U</span>
+            </div>
+            <div class="user-info">
+                <span class="username" id="username">Loading...</span>
+                <span class="user-id" id="userId">ID: -</span>
+            </div>
+            <div class="coins-display">
+                <span class="coin-icon">🪙</span>
+                <span class="coin-balance" id="coinBalance">0</span>
+            </div>
+        </header>
+
+        <div class="card-stats" id="cardStats">
+            <div class="stat-item">
+                <span class="stat-value rarity-common">0</span>
+                <span class="stat-label">Common</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value rarity-rare">0</span>
+                <span class="stat-label">Rare</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value rarity-epic">0</span>
+                <span class="stat-label">Epic</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value rarity-legendary">0</span>
+                <span class="stat-label">Legendary</span>
+            </div>
+        </div>
+
+        <main class="main-content" id="mainContent">
+        </main>
+
+        <nav class="nav-bar">
+            <button class="nav-btn active" data-view="dashboard">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" data-view="packs">
+                <span class="nav-icon">📦</span>
+                <span>Packs</span>
+            </button>
+            <button class="nav-btn" data-view="battle">
+                <span class="nav-icon">⚔️</span>
+                <span>Battle</span>
+            </button>
+            <button class="nav-btn" data-view="collection">
+                <span class="nav-icon">🃏</span>
+                <span>Cards</span>
+            </button>
+            <button class="nav-btn" data-view="marketplace">
+                <span class="nav-icon">🛒</span>
+                <span>Market</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="mock-api.js"></script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script src="packs.js"></script>
+    <script src="collection.js"></script>
+    <script src="battle.js"></script>
+    <script src="marketplace.js"></script>
+    <script src="bonus.js"></script>
+    <script src="referral.js"></script>
+    <script src="withdraw.js"></script>
+    <script src="admin.js"></script>
+
+    <script>
+        MockAPI.init();
+        
+        App.renderView = function(view) {
+            const views = {
+                dashboard: () => {
+                    this.elements.mainContent.innerHTML = `
+                        <div class="dashboard">
+                            <section class="hero-section">
+                                <div class="hero-content">
+                                    <h1 class="game-title">
+                                        <span class="title-glow">NFT Cards</span>
+                                        <span class="title-sub">Collection Game</span>
+                                    </h1>
+                                    <div class="quick-stats">
+                                        <div class="quick-stat">
+                                            <span>🃏</span>
+                                            <span>${this.state.user?.totalCards || 0} Cards</span>
+                                        </div>
+                                        <div class="quick-stat">
+                                            <span>⚔️</span>
+                                            <span>Battle & Win</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="quick-actions">
+                                <button class="action-card ripple" data-view="packs">
+                                    <div class="action-icon">📦</div>
+                                    <span>Open Pack</span>
+                                </button>
+                                <button class="action-card ripple" data-view="battle">
+                                    <div class="action-icon">⚔️</div>
+                                    <span>Battle</span>
+                                </button>
+                                <button class="action-card ripple" data-view="collection">
+                                    <div class="action-icon">🃏</div>
+                                    <span>Collection</span>
+                                </button>
+                                <button class="action-card ripple" data-view="marketplace">
+                                    <div class="action-icon">🛒</div>
+                                    <span>Market</span>
+                                </button>
+                            </section>
+
+                            <section class="features-grid">
+                                <button class="feature-card ripple" data-view="bonus">
+                                    <div class="feature-icon daily-icon">
+                                        <span>🎁</span>
+                                    </div>
+                                    <div class="feature-info">
+                                        <h3>Daily Bonus</h3>
+                                        <p>Claim free coins</p>
+                                    </div>
+                                    <span class="icon-arrow">›</span>
+                                </button>
+                                <button class="feature-card ripple" data-view="referral">
+                                    <div class="feature-icon ref-icon">
+                                        <span>👥</span>
+                                    </div>
+                                    <div class="feature-info">
+                                        <h3>Referral</h3>
+                                        <p>Invite & earn</p>
+                                    </div>
+                                    <span class="icon-arrow">›</span>
+                                </button>
+                                <button class="feature-card ripple" data-view="withdraw">
+                                    <div class="feature-icon withdraw-icon">
+                                        <span>💰</span>
+                                    </div>
+                                    <div class="feature-info">
+                                        <h3>Withdraw</h3>
+                                        <p>Convert to UZS</p>
+                                    </div>
+                                    <span class="icon-arrow">›</span>
+                                </button>
+                                <button class="feature-card ripple" onclick="Admin.showAdminLogin()">
+                                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                        <span>🔐</span>
+                                    </div>
+                                    <div class="feature-info">
+                                        <h3>Admin</h3>
+                                        <p>Manage withdrawals</p>
+                                    </div>
+                                    <span class="icon-arrow">›</span>
+                                </button>
+                            </section>
+
+                            <section class="recent-cards">
+                                <h2 class="section-title">Your Recent Cards</h2>
+                                <div class="recent-cards-grid" id="recentCardsGrid">
+                                    ${this.renderRecentCards()}
+                                </div>
+                            </section>
+                        </div>
+                    `;
+
+                    this.elements.mainContent.querySelectorAll('[data-view]').forEach(btn => {
+                        btn.addEventListener('click', () => this.navigateTo(btn.dataset.view));
+                    });
+                },
+
+                packs: () => Packs.render(),
+                collection: () => Collection.render(),
+                battle: () => Battle.render(),
+                marketplace: () => Marketplace.render(),
+                bonus: () => Bonus.render(),
+                referral: () => Referral.render(),
+                withdraw: () => Withdraw.render()
+            };
+
+            if (views[view]) {
+                views[view].call(this);
+            }
+        };
+
+        App.renderRecentCards = function() {
+            const userCards = MockAPI.cards.filter(c => c.ownerId === MockAPI.user.id).slice(-6).reverse();
+            if (userCards.length === 0) {
+                return '<p class="empty-message">No cards yet. Open a pack to get started!</p>';
+            }
+            
+            return userCards.map(card => {
+                const rarityClass = `rarity-${card.rarity}`;
+                const glowClass = card.rarity === 'legendary' || card.rarity === 'epic' ? 'card-glow' : '';
+                const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
+                
+                return `
+                    <div class="card ${rarityClass} ${glowClass} card-small" 
+                         data-card-id="${card.id}" 
+                         onclick="App.showCardDetail('${card.id}')">
+                        <div class="card-image">
+                            <div class="card-avatar ${rarityClass}">
+                                ${emojis[card.rarity] || '🃏'}
+                            </div>
+                        </div>
+                        <h4 class="card-name">${card.name}</h4>
+                        <div class="card-stats-row">
+                            <span class="power-badge">⚡${card.power}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        App.showCardDetail = function(cardId) {
+            const card = MockAPI.cards.find(c => c.id === cardId);
+            if (!card) return;
+
+            const isOwner = card.ownerId === MockAPI.user.id;
+            const rarityClass = `rarity-${card.rarity}`;
+            const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
+            const descriptions = {
+                common: 'A standard card with basic capabilities. Every collector starts here!',
+                rare: 'An enhanced card with superior stats. Great addition to any deck!',
+                epic: 'A powerful card featuring unique abilities. Highly sought after!',
+                legendary: 'THE RAREST card in existence! Features ultimate power and abilities!'
+            };
+            
+            const content = `
+                <div class="card-detail ${rarityClass} ${card.rarity === 'legendary' || card.rarity === 'epic' ? 'card-glow' : ''}">
+                    <div class="detail-card-wrapper">
+                        <div class="detail-card ${rarityClass}">
+                            <div class="detail-card-avatar ${rarityClass}">
+                                ${emojis[card.rarity] || '🃏'}
+                            </div>
+                            <div class="detail-card-badge ${rarityClass}">${card.rarity.toUpperCase()}</div>
+                        </div>
+                    </div>
+                    <h2 class="detail-card-name">${card.name}</h2>
+                    <p class="detail-card-desc">${descriptions[card.rarity] || ''}</p>
+                    
+                    <div class="detail-stats">
+                        <div class="detail-stat">
+                            <span class="detail-stat-label">Power</span>
+                            <span class="detail-stat-value">⚡ ${card.power}</span>
+                        </div>
+                        <div class="detail-stat">
+                            <span class="detail-stat-label">Speed</span>
+                            <span class="detail-stat-value">💨 ${card.speed}</span>
+                        </div>
+                        <div class="detail-stat">
+                            <span class="detail-stat-label">Defense</span>
+                            <span class="detail-stat-value">🛡️ ${card.defense}</span>
+                        </div>
+                        <div class="detail-stat">
+                            <span class="detail-stat-label">Ability</span>
+                            <span class="detail-stat-value">✨ ${card.specialAbility}</span>
+                        </div>
+                    </div>
+
+                    ${isOwner ? `
+                        <div class="detail-actions">
+                            ${!card.isForSale ? `
+                                <button class="btn btn-primary ripple" onclick="App.listCardForSale('${card.id}')">
+                                    💰 List for Sale
+                                </button>
+                            ` : `
+                                <button class="btn btn-danger ripple" onclick="App.cancelCardSale('${card.id}')">
+                                    ✖️ Cancel Sale
+                                </button>
+                                <div class="sale-info">Listed for ${card.salePrice?.toLocaleString()} coins</div>
+                            `}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            this.showModal(content);
+        };
+
+        App.getCardEmoji = function(rarity) {
+            const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
+            return emojis[rarity] || '🃏';
+        };
+
+        App.listCardForSale = async function(cardId) {
+            const price = prompt('Enter sale price (coins):');
+            if (!price || isNaN(price) || parseInt(price) <= 0) {
+                this.showToast('Invalid price', 'error');
+                return;
+            }
+
+            try {
+                this.setLoading(true);
+                await API.listCard(cardId, parseInt(price));
+                this.showToast('Card listed for sale!', 'success');
+                this.closeModal();
+                await this.refreshUser();
+            } catch (error) {
+                this.showToast(error.message || 'Failed to list card', 'error');
+            } finally {
+                this.setLoading(false);
+            }
+        };
+
+        App.cancelCardSale = async function(cardId) {
+            try {
+                this.setLoading(true);
+                await API.cancelListing(cardId);
+                this.showToast('Sale cancelled', 'success');
+                this.closeModal();
+                await this.refreshUser();
+            } catch (error) {
+                this.showToast(error.message || 'Failed to cancel sale', 'error');
+            } finally {
+                this.setLoading(false);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init();
+        });
+
+        window.telegramReady = true;
+    </script>
+</body>
+</html>
