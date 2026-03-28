@@ -22,9 +22,7 @@
             overflow-y: auto;
         }
 
-        .sidebar.active {
-            left: 0;
-        }
+        .sidebar.active { left: 0; }
 
         .sidebar-header {
             padding: 20px;
@@ -49,9 +47,7 @@
             padding: 5px;
         }
 
-        .sidebar-menu {
-            padding: 10px 0;
-        }
+        .sidebar-menu { padding: 10px 0; }
 
         .sidebar-menu .menu-item {
             display: flex;
@@ -86,11 +82,8 @@
             display: none;
         }
 
-        .sidebar-overlay.active {
-            display: block;
-        }
+        .sidebar-overlay.active { display: block; }
 
-        /* Menu Toggle Button */
         .menu-toggle {
             background: none;
             border: none;
@@ -101,7 +94,6 @@
             margin-right: 10px;
         }
 
-        /* Bot Connection Status */
         .bot-status {
             padding: 15px 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -136,11 +128,481 @@
             50% { opacity: 0.5; }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 260px;
-            }
+            .sidebar { width: 260px; }
+        }
+
+        /* Basic Styles for App */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #app { min-height: 100vh; }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(30, 41, 59, 0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .user-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username { font-weight: 600; font-size: 0.95rem; }
+        .user-id { font-size: 0.75rem; color: #94a3b8; }
+
+        .coins-display {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(59, 130, 246, 0.2);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .stat-value { display: block; font-weight: 700; font-size: 1.1rem; }
+        .stat-label { font-size: 0.7rem; color: #94a3b8; }
+
+        .rarity-common { color: #94a3b8; }
+        .rarity-rare { color: #3b82f6; }
+        .rarity-epic { color: #a855f7; }
+        .rarity-legendary { color: #f59e0b; }
+
+        .main-content { padding: 16px; padding-bottom: 80px; }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            background: rgba(30, 41, 59, 0.95);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            color: #fff;
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .nav-icon { font-size: 1.3rem; }
+        .nav-btn span:last-child { font-size: 0.7rem; }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .loading-overlay.hidden { display: none; }
+
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 3000;
+            animation: slideDown 0.3s ease;
+        }
+        .toast.hidden { display: none; }
+        .toast.success { border-left: 4px solid #22c55e; }
+        .toast.error { border-left: 4px solid #ef4444; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translate(-50%, -20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2500;
+            padding: 20px;
+        }
+        .modal.hidden { display: none; }
+        .modal-content {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px; right: 16px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Dashboard Styles */
+        .hero-section {
+            text-align: center;
+            padding: 24px 16px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0 0 8px;
+        }
+        .title-glow {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .title-sub {
+            display: block;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        .quick-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 16px;
+        }
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .action-card {
+            background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-card:hover {
+            background: rgba(59,130,246,0.15);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        .action-icon { font-size: 1.8rem; }
+        .action-card span:last-child { font-size: 0.85rem; font-weight: 500; }
+
+        .features-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .feature-card:hover {
+            background: rgba(59,130,246,0.1);
+            border-color: #3b82f6;
+        }
+        .feature-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+        }
+        .feature-icon.daily-icon { background: linear-gradient(135deg, #22c55e, #10b981); }
+        .feature-icon.ref-icon { background: linear-gradient(135deg, #f59e0b, #eab308); }
+        .feature-icon.withdraw-icon { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+        .feature-info { flex: 1; }
+        .feature-info h3 { margin: 0 0 4px; font-size: 1rem; }
+        .feature-info p { margin: 0; font-size: 0.8rem; color: #94a3b8; }
+        .icon-arrow { font-size: 1.2rem; color: #64748b; }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin: 0 0 14px;
+            font-weight: 600;
+        }
+        .recent-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .card {
+            background: rgba(30,41,59,0.9);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .card:hover { transform: translateY(-3px); }
+        .card.card-glow {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
+            to { box-shadow: 0 0 25px rgba(245, 158, 11, 0.6); }
+        }
+        .card.rarity-common { border-color: #94a3b8; }
+        .card.rarity-rare { border-color: #3b82f6; }
+        .card.rarity-epic { border-color: #a855f7; }
+        .card.rarity-legendary { border-color: #f59e0b; }
+        
+        .card-image {
+            width: 60px; height: 60px;
+            margin: 0 auto 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-avatar {
+            font-size: 1.8rem;
+        }
+        .card-name {
+            font-size: 0.8rem;
+            margin: 0 0 6px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-stats-row { display: flex; justify-content: center; }
+        .power-badge {
+            font-size: 0.75rem;
+            background: rgba(59,130,246,0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #94a3b8;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Card Detail Modal */
+        .card-detail { text-align: center; }
+        .detail-card-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .detail-card {
+            width: 140px; height: 180px;
+            border-radius: 16px;
+            background: rgba(30,41,59,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 3px solid;
+        }
+        .detail-card.rarity-common { border-color: #94a3b8; }
+        .detail-card.rarity-rare { border-color: #3b82f6; }
+        .detail-card.rarity-epic { border-color: #a855f7; }
+        .detail-card.rarity-legendary { border-color: #f59e0b; }
+        
+        .detail-card-avatar {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+        .detail-card-badge {
+            position: absolute;
+            top: 10px; right: 10px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.15);
+        }
+        .detail-card-name {
+            font-size: 1.3rem;
+            margin: 0 0 8px;
+            font-weight: 700;
+        }
+        .detail-card-desc {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin: 0 0 20px;
+            line-height: 1.4;
+        }
+        .detail-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .detail-stat {
+            background: rgba(255,255,255,0.05);
+            padding: 10px 14px;
+            border-radius: 10px;
+        }
+        .detail-stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .detail-stat-value {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .detail-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+        .sale-info {
+            font-size: 0.85rem;
+            color: #22c55e;
+            text-align: center;
+        }
+        .ripple { position: relative; overflow: hidden; }
+        .ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+        .ripple:active::after {
+            width: 300px; height: 300px;
+            opacity: 0;
         }
     </style>
 </head>
@@ -203,17 +665,17 @@
                     <div style="color: #94a3b8; font-size: 0.9rem;">Telegram Bot</div>
                     <div class="bot-status-indicator">
                         <div class="bot-status-dot" id="botStatusDot"></div>
-                        <span id="botStatusText" style="color: #fff; font-size: 0.85rem;">Connected</span>
+                        <span id="botStatusText" style="color: #fff; font-size: 0.85rem;">Checking...</span>
                     </div>
-                    <a href="https://t.me/kmuminov_testbot" target="_blank" class="menu-item" style="margin-top: 10px; padding: 10px 15px; background: rgba(59, 130, 246, 0.2); border-radius: 8px;">
+                    <a href="https://t.me/kmuminov_testbot" target="_blank" class="menu-item" style="margin-top: 10px; padding: 10px 15px; background: rgba(59, 130, 246, 0.2); border-radius: 8px; text-decoration: none;">
                         <span class="menu-icon">🤖</span>
-                        <span>Open Bot</span>
+                        <span>Open @kmuminov_testbot</span>
                     </a>
                 </div>
             </nav>
         </aside>
 
-        <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-overlay hidden" id="loadingOverlay">
             <div class="spinner"></div>
         </div>
 
@@ -231,7 +693,7 @@
         <header class="header">
             <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
             <div class="user-avatar" id="userAvatar">
-                <span>U</span>
+                <span id="userInitial">U</span>
             </div>
             <div class="user-info">
                 <span class="username" id="username">Loading...</span>
@@ -245,25 +707,24 @@
 
         <div class="card-stats" id="cardStats">
             <div class="stat-item">
-                <span class="stat-value rarity-common">0</span>
+                <span class="stat-value rarity-common" id="statCommon">0</span>
                 <span class="stat-label">Common</span>
             </div>
             <div class="stat-item">
-                <span class="stat-value rarity-rare">0</span>
+                <span class="stat-value rarity-rare" id="statRare">0</span>
                 <span class="stat-label">Rare</span>
             </div>
             <div class="stat-item">
-                <span class="stat-value rarity-epic">0</span>
+                <span class="stat-value rarity-epic" id="statEpic">0</span>
                 <span class="stat-label">Epic</span>
             </div>
             <div class="stat-item">
-                <span class="stat-value rarity-legendary">0</span>
+                <span class="stat-value rarity-legendary" id="statLegendary">0</span>
                 <span class="stat-label">Legendary</span>
             </div>
         </div>
 
-        <main class="main-content" id="mainContent">
-        </main>
+        <main class="main-content" id="mainContent"></main>
 
         <nav class="nav-bar">
             <button class="nav-btn active" data-view="dashboard">
@@ -289,49 +750,70 @@
         </nav>
     </div>
 
-    <script src="mock-api.js"></script>
-    <script src="api.js"></script>
-    <script src="app.js"></script>
-    <script src="packs.js"></script>
-    <script src="collection.js"></script>
-    <script src="battle.js"></script>
-    <script src="marketplace.js"></script>
-    <script src="bonus.js"></script>
-    <script src="referral.js"></script>
-    <script src="withdraw.js"></script>
-    <script src="admin.js"></script>
-
     <script>
         // ==================== GLOBAL CONFIG ====================
         const SITE_URL = 'https://nft-game-1-1ryd.onrender.com';
-        const BOT_USERNAME = 'kmuminov_testbot'; // Telegram bot username (masalan: NFTGameBot)
+        const BOT_USERNAME = 'kmuminov_testbot';
+        const BOT_USER_ID = '8527765725'; // Fixed user ID
         const BOT_WEBHOOK_URL = `${SITE_URL}/webhook`;
         
-        // ==================== SIDEBAR FUNCTIONS ====================
+        // ==================== MOCK API ====================
+        const MockAPI = {
+            user: {
+                id: BOT_USER_ID,
+                username: 'Player_' + BOT_USER_ID.slice(-4),
+                coins: 1500,
+                totalCards: 0,
+                cardsByRarity: { common: 0, rare: 0, epic: 0, legendary: 0 }
+            },
+            cards: [
+                { id: 'c1', name: 'Shadow Wolf', rarity: 'common', power: 45, speed: 30, defense: 25, specialAbility: 'Stealth', ownerId: BOT_USER_ID, isForSale: false },
+                { id: 'c2', name: 'Fire Dragon', rarity: 'rare', power: 78, speed: 55, defense: 42, specialAbility: 'Fire Breath', ownerId: BOT_USER_ID, isForSale: false },
+                { id: 'c3', name: 'Crystal Phoenix', rarity: 'epic', power: 120, speed: 90, defense: 75, specialAbility: 'Rebirth', ownerId: BOT_USER_ID, isForSale: false },
+                { id: 'c4', name: 'Cosmic Titan', rarity: 'legendary', power: 200, speed: 150, defense: 130, specialAbility: 'Universe Strike', ownerId: BOT_USER_ID, isForSale: false }
+            ],
+            init() {
+                this.user.totalCards = this.cards.filter(c => c.ownerId === this.user.id).length;
+                this.cards.forEach(c => {
+                    if (c.ownerId === this.user.id) {
+                        this.user.cardsByRarity[c.rarity]++;
+                    }
+                });
+            },
+            getUser() { return { ...this.user }; },
+            getCards(ownerId) { return this.cards.filter(c => c.ownerId === ownerId); },
+            getCard(id) { return this.cards.find(c => c.id === id); },
+            addCoins(amount) { this.user.coins += amount; return this.user.coins; },
+            spendCoins(amount) {
+                if (this.user.coins >= amount) {
+                    this.user.coins -= amount;
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        // ==================== SIDEBAR ====================
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
         }
 
-        // Close sidebar when clicking outside
         document.addEventListener('click', (e) => {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('active')) {
+            if (!sidebar.contains(e.target) && !menuToggle?.contains(e.target) && sidebar.classList.contains('active')) {
                 toggleSidebar();
             }
         });
 
-        // ==================== BOT INTEGRATION ====================
+        // ==================== BOT INTEGRATION CLASS ====================
         class BotIntegration {
             constructor() {
                 this.isConnected = false;
-                this.userId = null;
-                this.init();
+                this.userId = BOT_USER_ID;
+                this.botUsername = BOT_USERNAME;
             }
 
             async init() {
@@ -341,10 +823,26 @@
 
             async checkConnection() {
                 try {
-                    // Simulate bot connection check
-                    const savedBotId = localStorage.getItem('8527765725');
-                    if (savedBotId) {
-                        this.userId = savedBotId;
+                    // Check Telegram WebApp availability
+                    if (window.Telegram?.WebApp) {
+                        const tg = window.Telegram.WebApp;
+                        tg.ready();
+                        tg.expand();
+                        
+                        // Get user data from Telegram
+                        const tgUser = tg.initDataUnsafe?.user;
+                        if (tgUser?.id) {
+                            this.userId = String(tgUser.id);
+                            this.isConnected = true;
+                            localStorage.setItem('botUserId', this.userId);
+                            this.updateBotStatus(true);
+                            return;
+                        }
+                    }
+                    
+                    // Fallback to localStorage
+                    const savedId = localStorage.getItem('botUserId');
+                    if (savedId === BOT_USER_ID) {
                         this.isConnected = true;
                         this.updateBotStatus(true);
                     } else {
@@ -361,10 +859,9 @@
             updateBotStatus(connected) {
                 const dot = document.getElementById('botStatusDot');
                 const text = document.getElementById('botStatusText');
-                
                 if (connected) {
                     dot.classList.remove('disconnected');
-                    text.textContent = 'Connected';
+                    text.textContent = 'Connected to @' + this.botUsername;
                     text.style.color = '#22c55e';
                 } else {
                     dot.classList.add('disconnected');
@@ -374,31 +871,41 @@
             }
 
             async connectBot() {
-                // This would normally open Telegram and get user ID
-                const telegramUrl = `https://t.me/${kmuminov_testbot}?start=${MockAPI.user.id}`;
-                window.open(telegramUrl, '_blank');
+                const startParam = `game_${MockAPI.user.id}_${Date.now()}`;
+                const telegramUrl = `https://t.me/${this.botUsername}?start=${startParam}`;
                 
-                // Save connection after user opens bot
+                if (window.Telegram?.WebApp) {
+                    window.Telegram.WebApp.openLink(telegramUrl);
+                } else {
+                    window.open(telegramUrl, '_blank');
+                }
+                
+                // Simulate connection after user interacts with bot
                 setTimeout(() => {
-                    localStorage.setItem('telegramBotId', MockAPI.user.id);
+                    localStorage.setItem('botUserId', BOT_USER_ID);
                     this.isConnected = true;
                     this.updateBotStatus(true);
-                    App.showToast('Bot connected successfully!', 'success');
-                }, 3000);
+                    App.showToast('✅ Connected to @' + this.botUsername, 'success');
+                }, 2500);
             }
 
             async sendToBot(message, type = 'notification') {
                 if (!this.isConnected) {
-                    console.warn('Bot not connected');
+                    App.showToast('⚠️ Bot not connected', 'error');
                     return false;
                 }
-
                 try {
-                    // In real implementation, this would call your backend
-                    console.log(`[BOT] Sending to ${this.userId}: ${message}`);
+                    console.log(`[BOT @${this.botUsername}] Sending to ${this.userId}: [${type}] ${message}`);
                     
-                    // Simulate API call
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    // Simulate API call to backend
+                    await new Promise(resolve => setTimeout(resolve, 400));
+                    
+                    // If backend exists, send webhook:
+                    // await fetch(BOT_WEBHOOK_URL, {
+                    //     method: 'POST',
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     body: JSON.stringify({ userId: this.userId, message, type })
+                    // });
                     
                     return true;
                 } catch (error) {
@@ -408,289 +915,480 @@
             }
 
             startHeartbeat() {
-                // Check connection every 30 seconds
-                setInterval(() => {
-                    this.checkConnection();
-                }, 30000);
+                setInterval(() => this.checkConnection(), 30000);
             }
 
-            // Send notification when withdrawal is approved/rejected
-            async sendWithdrawalNotification(status, amount, userId) {
+            async sendWithdrawalNotification(status, amount, currency = "so'm") {
                 const message = status === 'approved' 
-                    ? `✅ Withdrawal Approved! ${amount} so'm has been sent to your card.`
-                    : `❌ Withdrawal Rejected. ${amount} coins returned to your balance.`;
-                
+                    ? `✅ Withdrawal Approved!\n${amount.toLocaleString()} ${currency} sent to your card.`
+                    : `❌ Withdrawal Rejected.\n${amount.toLocaleString()} coins returned to balance.`;
                 await this.sendToBot(message, 'withdrawal');
             }
         }
 
-        // Initialize Bot Integration
-        const bot = new BotIntegration();
+        // ==================== APP ====================
+        const App = {
+            state: { user: null, currentView: 'dashboard' },
+            elements: {},
+            bot: null,
 
-        // ==================== APP EXTENSIONS ====================
-        MockAPI.init();
-        
-        App.renderView = function(view) {
-            const views = {
-                dashboard: () => {
-                    this.elements.mainContent.innerHTML = `
-                        <div class="dashboard">
-                            <section class="hero-section">
-                                <div class="hero-content">
-                                    <h1 class="game-title">
-                                        <span class="title-glow">NFT Cards</span>
-                                        <span class="title-sub">Collection Game</span>
-                                    </h1>
-                                    <div class="quick-stats">
-                                        <div class="quick-stat">
-                                            <span>🃏</span>
-                                            <span>${this.state.user?.totalCards || 0} Cards</span>
-                                        </div>
-                                        <div class="quick-stat">
-                                            <span>⚔️</span>
-                                            <span>Battle & Win</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+            init() {
+                this.elements = {
+                    mainContent: document.getElementById('mainContent'),
+                    username: document.getElementById('username'),
+                    userId: document.getElementById('userId'),
+                    userInitial: document.getElementById('userInitial'),
+                    coinBalance: document.getElementById('coinBalance'),
+                    loadingOverlay: document.getElementById('loadingOverlay'),
+                    toast: document.getElementById('toast'),
+                    toastMessage: document.getElementById('toastMessage'),
+                    modal: document.getElementById('modal'),
+                    modalContent: document.getElementById('modalContent'),
+                    modalClose: document.getElementById('modalClose'),
+                    statCommon: document.getElementById('statCommon'),
+                    statRare: document.getElementById('statRare'),
+                    statEpic: document.getElementById('statEpic'),
+                    statLegendary: document.getElementById('statLegendary')
+                };
 
-                            <section class="quick-actions">
-                                <button class="action-card ripple" data-view="packs">
-                                    <div class="action-icon">📦</div>
-                                    <span>Open Pack</span>
-                                </button>
-                                <button class="action-card ripple" data-view="battle">
-                                    <div class="action-icon">⚔️</div>
-                                    <span>Battle</span>
-                                </button>
-                                <button class="action-card ripple" data-view="collection">
-                                    <div class="action-icon">🃏</div>
-                                    <span>Collection</span>
-                                </button>
-                                <button class="action-card ripple" data-view="marketplace">
-                                    <div class="action-icon">🛒</div>
-                                    <span>Market</span>
-                                </button>
-                            </section>
-
-                            <section class="features-grid">
-                                <button class="feature-card ripple" data-view="bonus">
-                                    <div class="feature-icon daily-icon">
-                                        <span>🎁</span>
-                                    </div>
-                                    <div class="feature-info">
-                                        <h3>Daily Bonus</h3>
-                                        <p>Claim free coins</p>
-                                    </div>
-                                    <span class="icon-arrow">›</span>
-                                </button>
-                                <button class="feature-card ripple" data-view="referral">
-                                    <div class="feature-icon ref-icon">
-                                        <span>👥</span>
-                                    </div>
-                                    <div class="feature-info">
-                                        <h3>Referral</h3>
-                                        <p>Invite & earn</p>
-                                    </div>
-                                    <span class="icon-arrow">›</span>
-                                </button>
-                                <button class="feature-card ripple" data-view="withdraw">
-                                    <div class="feature-icon withdraw-icon">
-                                        <span>💰</span>
-                                    </div>
-                                    <div class="feature-info">
-                                        <h3>Withdraw</h3>
-                                        <p>Convert to UZS</p>
-                                    </div>
-                                    <span class="icon-arrow">›</span>
-                                </button>
-                                <button class="feature-card ripple" onclick="Admin.showAdminLogin(); return false;">
-                                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                                        <span>🔐</span>
-                                    </div>
-                                    <div class="feature-info">
-                                        <h3>Admin</h3>
-                                        <p>Manage withdrawals</p>
-                                    </div>
-                                    <span class="icon-arrow">›</span>
-                                </button>
-                            </section>
-
-                            <section class="recent-cards">
-                                <h2 class="section-title">Your Recent Cards</h2>
-                                <div class="recent-cards-grid" id="recentCardsGrid">
-                                    ${this.renderRecentCards()}
-                                </div>
-                            </section>
-                        </div>
-                    `;
-
-                    this.elements.mainContent.querySelectorAll('[data-view]').forEach(btn => {
-                        btn.addEventListener('click', () => this.navigateTo(btn.dataset.view));
-                    });
-                },
-
-                packs: () => Packs.render(),
-                collection: () => Collection.render(),
-                battle: () => Battle.render(),
-                marketplace: () => Marketplace.render(),
-                bonus: () => Bonus.render(),
-                referral: () => Referral.render(),
-                withdraw: () => Withdraw.render()
-            };
-
-            if (views[view]) {
-                views[view].call(this);
-            }
-        };
-
-        App.renderRecentCards = function() {
-            const userCards = MockAPI.cards.filter(c => c.ownerId === MockAPI.user.id).slice(-6).reverse();
-            if (userCards.length === 0) {
-                return '<p class="empty-message">No cards yet. Open a pack to get started!</p>';
-            }
-            
-            return userCards.map(card => {
-                const rarityClass = `rarity-${card.rarity}`;
-                const glowClass = card.rarity === 'legendary' || card.rarity === 'epic' ? 'card-glow' : '';
-                const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
+                // Initialize MockAPI
+                MockAPI.init();
                 
-                return `
-                    <div class="card ${rarityClass} ${glowClass} card-small" 
-                         data-card-id="${card.id}" 
-                         onclick="App.showCardDetail('${card.id}')">
-                        <div class="card-image">
-                            <div class="card-avatar ${rarityClass}">
-                                ${emojis[card.rarity] || '🃏'}
+                // Setup user
+                this.state.user = MockAPI.getUser();
+                this.updateUI();
+                
+                // Initialize bot
+                this.bot = new BotIntegration();
+                this.bot.init();
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                
+                // Render initial view
+                this.renderView('dashboard');
+                
+                console.log('🎮 App initialized for user:', this.state.user.id);
+                console.log('🤖 Bot: @' + BOT_USERNAME);
+            },
+
+            setupEventListeners() {
+                // Navigation buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                        e.currentTarget.classList.add('active');
+                        this.navigateTo(e.currentTarget.dataset.view);
+                    });
+                });
+
+                // Modal close
+                this.elements.modalClose?.addEventListener('click', () => this.closeModal());
+                this.elements.modal?.addEventListener('click', (e) => {
+                    if (e.target === this.elements.modal) this.closeModal();
+                });
+
+                // Keyboard escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') this.closeModal();
+                });
+            },
+
+            updateUI() {
+                const user = this.state.user;
+                if (!user) return;
+                
+                this.elements.username.textContent = user.username;
+                this.elements.userId.textContent = 'ID: ' + user.id;
+                this.elements.userInitial.textContent = user.username.charAt(0).toUpperCase();
+                this.elements.coinBalance.textContent = user.coins.toLocaleString();
+                
+                // Update card stats
+                this.elements.statCommon.textContent = user.cardsByRarity.common;
+                this.elements.statRare.textContent = user.cardsByRarity.rare;
+                this.elements.statEpic.textContent = user.cardsByRarity.epic;
+                this.elements.statLegendary.textContent = user.cardsByRarity.legendary;
+            },
+
+            navigateTo(view) {
+                this.state.currentView = view;
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === view);
+                });
+                this.renderView(view);
+                toggleSidebar(); // Close sidebar on mobile
+            },
+
+            renderView(view) {
+                const views = {
+                    dashboard: () => this.renderDashboard(),
+                    packs: () => this.renderPacks(),
+                    collection: () => this.renderCollection(),
+                    battle: () => this.renderBattle(),
+                    marketplace: () => this.renderMarketplace(),
+                    bonus: () => this.renderBonus(),
+                    referral: () => this.renderReferral(),
+                    withdraw: () => this.renderWithdraw()
+                };
+                if (views[view]) views[view]();
+            },
+
+            renderDashboard() {
+                const user = this.state.user;
+                this.elements.mainContent.innerHTML = `
+                    <div class="dashboard">
+                        <section class="hero-section">
+                            <div class="hero-content">
+                                <h1 class="game-title">
+                                    <span class="title-glow">NFT Cards</span>
+                                    <span class="title-sub">Collection Game</span>
+                                </h1>
+                                <div class="quick-stats">
+                                    <div class="quick-stat"><span>🃏</span><span>${user.totalCards} Cards</span></div>
+                                    <div class="quick-stat"><span>⚔️</span><span>Battle & Win</span></div>
+                                </div>
                             </div>
-                        </div>
-                        <h4 class="card-name">${card.name}</h4>
-                        <div class="card-stats-row">
-                            <span class="power-badge">⚡${card.power}</span>
-                        </div>
+                        </section>
+
+                        <section class="quick-actions">
+                            <button class="action-card ripple" onclick="App.navigateTo('packs')">
+                                <div class="action-icon">📦</div><span>Open Pack</span>
+                            </button>
+                            <button class="action-card ripple" onclick="App.navigateTo('battle')">
+                                <div class="action-icon">⚔️</div><span>Battle</span>
+                            </button>
+                            <button class="action-card ripple" onclick="App.navigateTo('collection')">
+                                <div class="action-icon">🃏</div><span>Collection</span>
+                            </button>
+                            <button class="action-card ripple" onclick="App.navigateTo('marketplace')">
+                                <div class="action-icon">🛒</div><span>Market</span>
+                            </button>
+                        </section>
+
+                        <section class="features-grid">
+                            <button class="feature-card ripple" onclick="App.navigateTo('bonus')">
+                                <div class="feature-icon daily-icon"><span>🎁</span></div>
+                                <div class="feature-info"><h3>Daily Bonus</h3><p>Claim free coins</p></div>
+                                <span class="icon-arrow">›</span>
+                            </button>
+                            <button class="feature-card ripple" onclick="App.navigateTo('referral')">
+                                <div class="feature-icon ref-icon"><span>👥</span></div>
+                                <div class="feature-info"><h3>Referral</h3><p>Invite & earn</p></div>
+                                <span class="icon-arrow">›</span>
+                            </button>
+                            <button class="feature-card ripple" onclick="App.navigateTo('withdraw')">
+                                <div class="feature-icon withdraw-icon"><span>💰</span></div>
+                                <div class="feature-info"><h3>Withdraw</h3><p>Convert to UZS</p></div>
+                                <span class="icon-arrow">›</span>
+                            </button>
+                            <button class="feature-card ripple" onclick="Admin.showAdminLogin()">
+                                <div class="feature-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)"><span>🔐</span></div>
+                                <div class="feature-info"><h3>Admin</h3><p>Manage withdrawals</p></div>
+                                <span class="icon-arrow">›</span>
+                            </button>
+                        </section>
+
+                        <section class="recent-cards">
+                            <h2 class="section-title">Your Recent Cards</h2>
+                            <div class="recent-cards-grid" id="recentCardsGrid">
+                                ${this.renderRecentCards()}
+                            </div>
+                        </section>
                     </div>
                 `;
-            }).join('');
-        };
+            },
 
-        App.showCardDetail = function(cardId) {
-            const card = MockAPI.cards.find(c => c.id === cardId);
-            if (!card) return;
-
-            const isOwner = card.ownerId === MockAPI.user.id;
-            const rarityClass = `rarity-${card.rarity}`;
-            const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
-            const descriptions = {
-                common: 'A standard card with basic capabilities. Every collector starts here!',
-                rare: 'An enhanced card with superior stats. Great addition to any deck!',
-                epic: 'A powerful card featuring unique abilities. Highly sought after!',
-                legendary: 'THE RAREST card in existence! Features ultimate power and abilities!'
-            };
-            
-            const content = `
-                <div class="card-detail ${rarityClass} ${card.rarity === 'legendary' || card.rarity === 'epic' ? 'card-glow' : ''}">
-                    <div class="detail-card-wrapper">
-                        <div class="detail-card ${rarityClass}">
-                            <div class="detail-card-avatar ${rarityClass}">
-                                ${emojis[card.rarity] || '🃏'}
+            renderRecentCards() {
+                const userCards = MockAPI.getCards(BOT_USER_ID).slice(-6).reverse();
+                if (userCards.length === 0) {
+                    return '<p class="empty-message">No cards yet. Open a pack to get started!</p>';
+                }
+                const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
+                return userCards.map(card => {
+                    const rarityClass = `rarity-${card.rarity}`;
+                    const glowClass = ['legendary','epic'].includes(card.rarity) ? 'card-glow' : '';
+                    return `
+                        <div class="card ${rarityClass} ${glowClass}" onclick="App.showCardDetail('${card.id}')">
+                            <div class="card-image">
+                                <div class="card-avatar ${rarityClass}">${emojis[card.rarity] || '🃏'}</div>
                             </div>
-                            <div class="detail-card-badge ${rarityClass}">${card.rarity.toUpperCase()}</div>
+                            <h4 class="card-name">${card.name}</h4>
+                            <div class="card-stats-row">
+                                <span class="power-badge">⚡${card.power}</span>
+                            </div>
                         </div>
+                    `;
+                }).join('');
+            },
+
+            showCardDetail(cardId) {
+                const card = MockAPI.getCard(cardId);
+                if (!card) return;
+                const isOwner = card.ownerId === BOT_USER_ID;
+                const rarityClass = `rarity-${card.rarity}`;
+                const glowClass = ['legendary','epic'].includes(card.rarity) ? 'card-glow' : '';
+                const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
+                const descriptions = {
+                    common: 'A standard card with basic capabilities. Every collector starts here!',
+                    rare: 'An enhanced card with superior stats. Great addition to any deck!',
+                    epic: 'A powerful card featuring unique abilities. Highly sought after!',
+                    legendary: 'THE RAREST card in existence! Features ultimate power and abilities!'
+                };
+                
+                const content = `
+                    <div class="card-detail ${rarityClass} ${glowClass}">
+                        <div class="detail-card-wrapper">
+                            <div class="detail-card ${rarityClass}">
+                                <div class="detail-card-avatar ${rarityClass}">${emojis[card.rarity]}</div>
+                                <div class="detail-card-badge ${rarityClass}">${card.rarity.toUpperCase()}</div>
+                            </div>
+                        </div>
+                        <h2 class="detail-card-name">${card.name}</h2>
+                        <p class="detail-card-desc">${descriptions[card.rarity]}</p>
+                        <div class="detail-stats">
+                            <div class="detail-stat"><span class="detail-stat-label">Power</span><span class="detail-stat-value">⚡ ${card.power}</span></div>
+                            <div class="detail-stat"><span class="detail-stat-label">Speed</span><span class="detail-stat-value">💨 ${card.speed}</span></div>
+                            <div class="detail-stat"><span class="detail-stat-label">Defense</span><span class="detail-stat-value">🛡️ ${card.defense}</span></div>
+                            <div class="detail-stat"><span class="detail-stat-label">Ability</span><span class="detail-stat-value">✨ ${card.specialAbility}</span></div>
+                        </div>
+                        ${isOwner ? `
+                            <div class="detail-actions">
+                                ${!card.isForSale ? 
+                                    `<button class="btn btn-primary ripple" onclick="App.listCardForSale('${card.id}')">💰 List for Sale</button>` :
+                                    `<button class="btn btn-danger ripple" onclick="App.cancelCardSale('${card.id}')">✖️ Cancel Sale</button>
+                                     <div class="sale-info">Listed for ${card.salePrice?.toLocaleString()} coins</div>`
+                                }
+                            </div>
+                        ` : ''}
                     </div>
-                    <h2 class="detail-card-name">${card.name}</h2>
-                    <p class="detail-card-desc">${descriptions[card.rarity] || ''}</p>
+                `;
+                this.showModal(content);
+            },
+
+            async listCardForSale(cardId) {
+                const price = prompt('Enter sale price (coins):');
+                if (!price || isNaN(price) || parseInt(price) <= 0) {
+                    this.showToast('Invalid price', 'error');
+                    return;
+                }
+                this.setLoading(true);
+                try {
+                    const card = MockAPI.getCard(cardId);
+                    if (card) {
+                        card.isForSale = true;
+                        card.salePrice = parseInt(price);
+                    }
+                    this.showToast('Card listed for sale! 🎉', 'success');
+                    this.closeModal();
+                    await this.refreshUser();
+                } catch (error) {
+                    this.showToast('Failed to list card', 'error');
+                } finally {
+                    this.setLoading(false);
+                }
+            },
+
+            async cancelCardSale(cardId) {
+                this.setLoading(true);
+                try {
+                    const card = MockAPI.getCard(cardId);
+                    if (card) {
+                        card.isForSale = false;
+                        delete card.salePrice;
+                    }
+                    this.showToast('Sale cancelled', 'success');
+                    this.closeModal();
+                    await this.refreshUser();
+                } catch (error) {
+                    this.showToast('Failed to cancel sale', 'error');
+                } finally {
+                    this.setLoading(false);
+                }
+            },
+
+            // Placeholder render methods
+            renderPacks() { this.elements.mainContent.innerHTML = '<h2>📦 Card Packs</h2><p>Open packs to collect NFT cards!</p>'; },
+            renderCollection() { this.elements.mainContent.innerHTML = '<h2>🃏 My Collection</h2><p>' + this.renderRecentCards() + '</p>'; },
+            renderBattle() { this.elements.mainContent.innerHTML = '<h2>⚔️ Battle Arena</h2><p>Challenge other players!</p>'; },
+            renderMarketplace() { this.elements.mainContent.innerHTML = '<h2>🛒 Marketplace</h2><p>Buy and sell cards with other players.</p>'; },
+            renderBonus() { this.elements.mainContent.innerHTML = '<h2>🎁 Daily Bonus</h2><p>Claim your daily reward!</p><button class="btn btn-primary" onclick="App.claimBonus()">Claim 100 coins</button>'; },
+            renderReferral() { this.elements.mainContent.innerHTML = '<h2>👥 Referral Program</h2><p>Invite friends and earn coins!</p><p style="background:rgba(59,130,246,0.2);padding:12px;border-radius:10px;margin:10px 0">Your link:<br><strong>https://t.me/' + BOT_USERNAME + '?start=ref_' + BOT_USER_ID + '</strong></p>'; },
+            renderWithdraw() {
+                this.elements.mainContent.innerHTML = `
+                    <h2>💰 Withdraw Coins</h2>
+                    <p>Convert your coins to UZS and withdraw to your card.</p>
+                    <div style="background:rgba(30,41,59,0.8);padding:16px;border-radius:12px;margin:16px 0">
+                        <p><strong>Balance:</strong> <span id="withdrawBalance">${MockAPI.user.coins.toLocaleString()}</span> coins</p>
+                        <p><strong>Rate:</strong> 100 coins = 1,000 so'm</p>
+                    </div>
+                    <input type="number" id="withdrawAmount" placeholder="Enter amount" min="100" step="100" style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:#1e293b;color:#fff;margin-bottom:12px">
+                    <button class="btn btn-primary ripple" style="width:100%" onclick="App.requestWithdraw()">Request Withdrawal</button>
+                    <p style="font-size:0.8rem;color:#94a3b8;margin-top:12px">⚠️ Withdrawals are reviewed by admin. Connected bot: @${BOT_USERNAME}</p>
+                `;
+            },
+
+            claimBonus() {
+                MockAPI.addCoins(100);
+                this.refreshUser();
+                this.showToast('🎁 +100 coins claimed!', 'success');
+                this.bot?.sendToBot('Daily bonus claimed: +100 coins', 'bonus');
+            },
+
+            async requestWithdraw() {
+                const amount = parseInt(document.getElementById('withdrawAmount')?.value);
+                if (!amount || amount < 100) {
+                    this.showToast('Minimum withdrawal: 100 coins', 'error');
+                    return;
+                }
+                if (amount > MockAPI.user.coins) {
+                    this.showToast('Insufficient balance', 'error');
+                    return;
+                }
+                
+                this.setLoading(true);
+                try {
+                    MockAPI.spendCoins(amount);
+                    await this.refreshUser();
                     
-                    <div class="detail-stats">
-                        <div class="detail-stat">
-                            <span class="detail-stat-label">Power</span>
-                            <span class="detail-stat-value">⚡ ${card.power}</span>
-                        </div>
-                        <div class="detail-stat">
-                            <span class="detail-stat-label">Speed</span>
-                            <span class="detail-stat-value">💨 ${card.speed}</span>
-                        </div>
-                        <div class="detail-stat">
-                            <span class="detail-stat-label">Defense</span>
-                            <span class="detail-stat-value">🛡️ ${card.defense}</span>
-                        </div>
-                        <div class="detail-stat">
-                            <span class="detail-stat-label">Ability</span>
-                            <span class="detail-stat-value">✨ ${card.specialAbility}</span>
-                        </div>
-                    </div>
+                    // Send notification to bot
+                    await this.bot?.sendToBot(`Withdrawal request: ${amount} coins (${(amount*10).toLocaleString()} so'm)`, 'withdrawal');
+                    
+                    this.showToast('✅ Withdrawal request sent! Admin will review.', 'success');
+                    this.renderWithdraw(); // Re-render to update balance
+                } catch (error) {
+                    this.showToast('Request failed', 'error');
+                } finally {
+                    this.setLoading(false);
+                }
+            },
 
-                    ${isOwner ? `
-                        <div class="detail-actions">
-                            ${!card.isForSale ? `
-                                <button class="btn btn-primary ripple" onclick="App.listCardForSale('${card.id}')">
-                                    💰 List for Sale
-                                </button>
-                            ` : `
-                                <button class="btn btn-danger ripple" onclick="App.cancelCardSale('${card.id}')">
-                                    ✖️ Cancel Sale
-                                </button>
-                                <div class="sale-info">Listed for ${card.salePrice?.toLocaleString()} coins</div>
-                            `}
-                        </div>
-                    ` : ''}
-                </div>
-            `;
+            // UI Helpers
+            setLoading(show) {
+                this.elements.loadingOverlay.classList.toggle('hidden', !show);
+            },
 
-            this.showModal(content);
-        };
+            showToast(message, type = 'info') {
+                this.elements.toastMessage.textContent = message;
+                this.elements.toast.className = `toast ${type}`;
+                setTimeout(() => this.elements.toast.classList.add('hidden'), 3000);
+            },
 
-        App.getCardEmoji = function(rarity) {
-            const emojis = { common: '🛡️', rare: '🐉', epic: '🔥', legendary: '👑' };
-            return emojis[rarity] || '🃏';
-        };
+            showModal(content) {
+                this.elements.modalContent.innerHTML = content;
+                this.elements.modal.classList.remove('hidden');
+            },
 
-        App.listCardForSale = async function(cardId) {
-            const price = prompt('Enter sale price (coins):');
-            if (!price || isNaN(price) || parseInt(price) <= 0) {
-                this.showToast('Invalid price', 'error');
-                return;
-            }
+            closeModal() {
+                this.elements.modal.classList.add('hidden');
+            },
 
-            try {
-                this.setLoading(true);
-                await API.listCard(cardId, parseInt(price));
-                this.showToast('Card listed for sale!', 'success');
-                this.closeModal();
-                await this.refreshUser();
-            } catch (error) {
-                this.showToast(error.message || 'Failed to list card', 'error');
-            } finally {
-                this.setLoading(false);
+            async refreshUser() {
+                this.state.user = MockAPI.getUser();
+                this.updateUI();
             }
         };
 
-        App.cancelCardSale = async function(cardId) {
-            try {
-                this.setLoading(true);
-                await API.cancelListing(cardId);
-                this.showToast('Sale cancelled', 'success');
-                this.closeModal();
-                await this.refreshUser();
-            } catch (error) {
-                this.showToast(error.message || 'Failed to cancel sale', 'error');
-            } finally {
-                this.setLoading(false);
+        // ==================== ADMIN (Simple) ====================
+        const Admin = {
+            showAdminLogin() {
+                const content = `
+                    <h3 style="margin:0 0 16px">🔐 Admin Login</h3>
+                    <input type="password" id="adminPass" placeholder="Enter admin password" 
+                           style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:#1e293b;color:#fff;margin-bottom:12px">
+                    <button class="btn btn-primary ripple" style="width:100%" onclick="Admin.checkLogin()">Login</button>
+                    <p style="font-size:0.75rem;color:#94a3b8;margin-top:12px;text-align:center">Demo: password = "admin123"</p>
+                `;
+                App.showModal(content);
+            },
+            checkLogin() {
+                const pass = document.getElementById('adminPass')?.value;
+                if (pass === 'admin123') {
+                    App.closeModal();
+                    Admin.showPanel();
+                } else {
+                    App.showToast('❌ Wrong password', 'error');
+                }
+            },
+            showPanel() {
+                const pending = [
+                    { id: 'w1', userId: '8527765725', amount: 5000, coins: 500, status: 'pending', date: '2026-03-29' }
+                ];
+                const content = `
+                    <h3 style="margin:0 0 16px">🔐 Admin Panel</h3>
+                    <h4>Pending Withdrawals</h4>
+                    ${pending.length ? pending.map(w => `
+                        <div style="background:rgba(30,41,59,0.8);padding:12px;border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;align-items:center">
+                            <div>
+                                <strong>User: ${w.userId}</strong><br>
+                                <small>${w.coins} coins → ${w.amount.toLocaleString()} so'm</small><br>
+                                <small style="color:#94a3b8">${w.date}</small>
+                            </div>
+                            <div style="display:flex;gap:8px">
+                                <button class="btn" style="background:#22c55e;color:#fff;padding:8px 16px;border-radius:8px;border:none" onclick="Admin.approveWithdraw('${w.id}')">✓</button>
+                                <button class="btn" style="background:#ef4444;color:#fff;padding:8px 16px;border-radius:8px;border:none" onclick="Admin.rejectWithdraw('${w.id}')">✗</button>
+                            </div>
+                        </div>
+                    `).join('') : '<p style="color:#94a3b8">No pending withdrawals</p>'}
+                    <button class="btn" style="margin-top:16px;width:100%;background:#64748b;color:#fff;padding:10px;border-radius:10px;border:none" onclick="App.closeModal()">Close</button>
+                `;
+                App.showModal(content);
+            },
+            async approveWithdraw(id) {
+                // In real app: update DB, send money, notify bot
+                await App.bot?.sendWithdrawalNotification('approved', 5000);
+                App.showToast('✅ Withdrawal approved & notified via bot', 'success');
+                Admin.showPanel();
+            },
+            async rejectWithdraw(id) {
+                MockAPI.addCoins(500); // Return coins
+                await App.bot?.sendWithdrawalNotification('rejected', 5000);
+                App.showToast('❌ Withdrawal rejected, coins returned', 'success');
+                Admin.showPanel();
             }
         };
 
-        // ==================== INITIALIZATION ====================
+        // ==================== TELEGRAM WEBAPP INIT ====================
+        function initTelegramWebApp() {
+            if (window.Telegram?.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+                tg.expand();
+                tg.enableClosingConfirmation();
+                
+                // Set theme colors
+                document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#0f172a');
+                document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#ffffff');
+                
+                console.log('✅ Telegram WebApp initialized');
+                return true;
+            }
+            console.log('ℹ️ Running outside Telegram WebApp');
+            return false;
+        }
+
+        // ==================== INIT ====================
         document.addEventListener('DOMContentLoaded', () => {
+            initTelegramWebApp();
             App.init();
             
-            // Check bot connection status
-            setTimeout(() => {
-                bot.checkConnection();
-            }, 1000);
+            // Expose globals for debugging
+            window.App = App;
+            window.bot = App.bot;
+            window.BOT_USERNAME = BOT_USERNAME;
+            window.BOT_USER_ID = BOT_USER_ID;
+            
+            console.log('🚀 NFT Game Loaded');
+            console.log('🤖 Bot: @' + BOT_USERNAME);
+            console.log('👤 User ID: ' + BOT_USER_ID);
         });
 
-        window.telegramReady = true;
-        window.SITE_URL = SITE_URL;
-        window.bot = bot;
+        // Telegram WebApp script (if loaded from Telegram)
+        if (document.currentScript?.src?.includes('telegram-web-app.js') || window.Telegram?.WebApp) {
+            window.telegramReady = true;
+        }
     </script>
+    
+    <!-- Telegram WebApp JS (optional - loads only in Telegram) -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
